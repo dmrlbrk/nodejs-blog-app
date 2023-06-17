@@ -10,8 +10,12 @@ import fileUpload from 'express-fileupload'
 import main from './routes/main.js'
 import posts from './routes/posts.js'
 import users from './routes/users.js'
+import admin from './routes/admin/index.js'
 // Date Formater
 import generateDate from './helpers/generateDate.js'
+import session from 'express-session'
+import MongoStore from 'connect-mongo'
+import methodOverride from 'method-override'
 
 
 // Connect db
@@ -27,12 +31,33 @@ const app = express()
 const port = 3000
 const host = '127.0.0.1'
 
+
+
+// User data
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  // cookie: { secure: true },
+  // store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/nodeblog_db' })
+
+}))
+
+// Falsh massage middleware
+app.use((req, res, next) => {
+  res.locals.sessionFlash = req.session.sessionFlash
+  delete req.session.sessionFlash
+  next()
+})
+
+
 // File Upload
 app.use(fileUpload())
 
 // Static Files
 app.use(express.static('public'))
-
+// Define Method
+app.use(methodOverride('_method'))
 
 // Templates - handlebars
 app.engine('handlebars', exphbs({ helpers: { generateDate: generateDate } }));
@@ -45,14 +70,24 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-// middleware
-// const myMiddleware = (req, res, next) => {
-//   console.log('myMiddleware')
-//   next()
-// }
-// app.use('/', myMiddleware)
 
+// Page Display Link Middleware
+app.use((req, res, next) => {
 
+  const { userId } = req.session
+
+  if (userId) {
+    res.locals = {
+      displayLink : true
+    }
+  }
+  else {
+    res.locals = {
+      displayLink : false
+    }
+  }
+  next()
+})
 
 
 
@@ -60,6 +95,7 @@ app.use(bodyParser.json())
 app.use("/", main)
 app.use("/posts", posts)
 app.use("/users", users)
+app.use("/admin", admin)
 
 
 
