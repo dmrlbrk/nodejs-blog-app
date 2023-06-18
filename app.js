@@ -13,6 +13,7 @@ import users from './routes/users.js'
 import admin from './routes/admin/index.js'
 // Date Formater
 import generateDate from './helpers/generateDate.js'
+import isSelected from './helpers/isSelected.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import methodOverride from 'method-override'
@@ -60,7 +61,7 @@ app.use(express.static('public'))
 app.use(methodOverride('_method'))
 
 // Templates - handlebars
-app.engine('handlebars', exphbs({ helpers: { generateDate: generateDate } }));
+app.engine('handlebars', exphbs({ helpers: { generateDate: generateDate , isSelected: isSelected} }));
 app.set('view engine', 'handlebars');
 
 
