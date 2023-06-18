@@ -12,13 +12,12 @@ import posts from './routes/posts.js'
 import users from './routes/users.js'
 import admin from './routes/admin/index.js'
 // Date Formater
-import generateDate from './helpers/generateDate.js'
-import isSelected from './helpers/isSelected.js'
+
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import methodOverride from 'method-override'
-import limit from './helpers/limit.js'
-import truncate from './helpers/truncate.js'
+// Helpers
+import { dateFormat, limit, isSelected, truncate } from './helpers/hbs.js'
 
 
 // Connect db
@@ -61,7 +60,7 @@ app.use(methodOverride('_method'))
 // Templates - handlebars, helpers
 app.engine('handlebars', exphbs({
   helpers: {
-    generateDate: generateDate,
+    dateFormat: dateFormat,
     isSelected: isSelected,
     limit: limit,
     truncate: truncate,
