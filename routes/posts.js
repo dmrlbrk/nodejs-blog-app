@@ -21,27 +21,31 @@ router.get('/category/:categoryId', (req, res) => {
     Post.find({ category: req.params.categoryId }).lean().populate({
         path: "category",
         model: Category
-    }).then(posts => {
-        Category.aggregate([
-            {
-                $lookup: {
-                    from: 'posts',
-                    localField: '_id',
-                    foreignField: 'category',
-                    as: 'posts'
-                },
-            },
-            {
-                $project: {
-                    _id: 1,
-                    name: 1,
-                    num_of_posts: { $size: '$posts' }
-                }
-            }
-        ]).then((categories) => {
-            res.render('site/blog', { categories: categories, posts: posts })
-        })
+    }).populate({
+        path: "author",
+        model: Users
     })
+        .then(posts => {
+            Category.aggregate([
+                {
+                    $lookup: {
+                        from: 'posts',
+                        localField: '_id',
+                        foreignField: 'category',
+                        as: 'posts'
+                    },
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        name: 1,
+                        num_of_posts: { $size: '$posts' }
+                    }
+                }
+            ]).then((categories) => {
+                res.render(`site/blog`, { categories: categories, posts: posts })
+            })
+        })
 })
 
 

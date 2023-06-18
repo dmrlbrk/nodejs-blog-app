@@ -18,6 +18,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import methodOverride from 'method-override'
 import limit from './helpers/limit.js'
+import truncate from './helpers/truncate.js'
 
 
 // Connect db
@@ -45,13 +46,6 @@ app.use(session({
 
 }))
 
-// Falsh massage middleware
-app.use((req, res, next) => {
-  res.locals.sessionFlash = req.session.sessionFlash
-  delete req.session.sessionFlash
-  next()
-})
-
 
 // File Upload
 app.use(fileUpload())
@@ -64,12 +58,13 @@ app.use(methodOverride('_method'))
 
 
 
-// Templates - handlebars
+// Templates - handlebars, helpers
 app.engine('handlebars', exphbs({
   helpers: {
     generateDate: generateDate,
     isSelected: isSelected,
-    limit: limit
+    limit: limit,
+    truncate: truncate,
   }
 }));
 app.set('view engine', 'handlebars');
@@ -100,6 +95,13 @@ app.use((req, res, next) => {
   next()
 })
 
+
+// Falsh massage middleware
+app.use((req, res, next) => {
+  res.locals.sessionFlash = req.session.sessionFlash
+  delete req.session.sessionFlash
+  next()
+})
 
 
 // Requests Router
