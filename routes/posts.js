@@ -17,6 +17,42 @@ router.get('/new', (req, res) => {
 })
 // router.get('/post/test', (req, res) => { res.send('TEST OK') })
 
+const escapeRegex = (text) => {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+router.get("/search", (req, res) => {
+    if (req.query.look) {
+        const regex = new RegExp(escapeRegex(req.query.look), 'gi');
+        Post.find({ "title": regex }).lean().populate({ path: "author", model: Users }).sort({ $natural: -1 }).then(posts => {
+            Category.aggregate([
+                {
+                    $lookup: {
+                        from: 'posts',
+                        localField: '_id',
+                        foreignField: 'category',
+                        as: 'posts'
+                    },
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        name: 1,
+                        num_of_posts: { $size: '$posts' }
+                    }
+                }
+            ]).then(categories => {
+                res.render(`site/blog`, { categories: categories, posts: posts })
+            }
+            )
+        })
+    }
+})
+
+router.get('/posts/search', (req, res) => {
+
+})
+
 router.get('/category/:categoryId', (req, res) => {
     Post.find({ category: req.params.categoryId }).lean().populate({
         path: "category",

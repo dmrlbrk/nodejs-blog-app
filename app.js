@@ -17,7 +17,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import methodOverride from 'method-override'
 // Helpers
-import { dateFormat, limit, isSelected, truncate } from './helpers/hbs.js'
+import { dateFormat, limit, isSelected, truncate, paginate} from './helpers/hbs.js'
 
 
 // Connect db
@@ -64,6 +64,7 @@ app.engine('handlebars', exphbs({
     isSelected: isSelected,
     limit: limit,
     truncate: truncate,
+    paginate: paginate,
   }
 }));
 app.set('view engine', 'handlebars');
