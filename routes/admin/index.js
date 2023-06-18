@@ -62,7 +62,7 @@ router.delete('/posts/:id', (req, res) => {
 router.get('/posts/edit/:id', (req, res) => {
 
     Post.findOne({ _id: req.params.id }).lean().then(post => {
-        console.log(post)
+        // console.log(post)
         Category.find({}).lean().then(categories => {
             res.render('admin/edit-post', { categories: categories, post: post })
         })

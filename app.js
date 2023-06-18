@@ -17,6 +17,7 @@ import isSelected from './helpers/isSelected.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import methodOverride from 'method-override'
+import limit from './helpers/limit.js'
 
 
 // Connect db
@@ -60,8 +61,17 @@ app.use(express.static('public'))
 // Define Method
 app.use(methodOverride('_method'))
 
+
+
+
 // Templates - handlebars
-app.engine('handlebars', exphbs({ helpers: { generateDate: generateDate , isSelected: isSelected} }));
+app.engine('handlebars', exphbs({
+  helpers: {
+    generateDate: generateDate,
+    isSelected: isSelected,
+    limit: limit
+  }
+}));
 app.set('view engine', 'handlebars');
 
 
@@ -79,12 +89,12 @@ app.use((req, res, next) => {
 
   if (userId) {
     res.locals = {
-      displayLink : true
+      displayLink: true
     }
   }
   else {
     res.locals = {
-      displayLink : false
+      displayLink: false
     }
   }
   next()
