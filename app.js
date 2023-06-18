@@ -11,6 +11,7 @@ import main from './routes/main.js'
 import posts from './routes/posts.js'
 import users from './routes/users.js'
 import admin from './routes/admin/index.js'
+import contact from './routes/contact.js'
 // Date Formater
 
 import session from 'express-session'
@@ -109,6 +110,7 @@ app.use("/", main)
 app.use("/posts", posts)
 app.use("/users", users)
 app.use("/admin", admin)
+app.use("/contact", contact)
 
 
 

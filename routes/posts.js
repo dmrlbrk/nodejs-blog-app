@@ -49,9 +49,6 @@ router.get("/search", (req, res) => {
     }
 })
 
-router.get('/posts/search', (req, res) => {
-
-})
 
 router.get('/category/:categoryId', (req, res) => {
     Post.find({ category: req.params.categoryId }).lean().populate({
@@ -136,6 +133,29 @@ router.post('/test', (req, res) => {
     }
 
     res.redirect('/blog')
+})
+
+
+
+router.post('/comment', (req, res) => {
+
+    console.log(req.body)
+
+    Post.updateOne(
+        { _id: req.body.postId },
+        {
+            $push: {
+                "comments": {
+                    name: req.body.name,
+                    body: req.body.body,
+                    email: req.body.email
+                }
+            }
+        }
+    ).then(
+        res.redirect(`/posts/${req.body.postId}`)
+    )
+
 })
 
 export default router

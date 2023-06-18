@@ -9,9 +9,9 @@ const PostSchema = new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
 
 
+    comments: [{ name: String, email: String, body: String, date: Date }],
 
 
-    comments: [{ body: String, date: Date }],
     hidden: Boolean,
     // meta: {
     //     votes: Number,

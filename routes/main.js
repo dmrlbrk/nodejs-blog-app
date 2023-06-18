@@ -14,7 +14,7 @@ router.get('/admin', (req, res) => { res.render('admin/index') })
 
 router.get('/blog', (req, res) => {
 
-    const postPerPage = 1
+    const postPerPage = 2
     const page = req.query.page || 1
     // console.log(req)
     Post

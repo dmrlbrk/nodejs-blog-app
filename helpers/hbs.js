@@ -18,7 +18,7 @@ const paginate = (options) => {
     let outputHTML = ''
     let current = Number(options.hash.current)
     let pages = Number(options.hash.pages)
-    console.log(current)
+    // console.log(current)
     if (current === 1) {
         outputHTML += `<li class="page-item disabled"><a class="page-link" href="?page=${1}"> First </a></li>`
     }

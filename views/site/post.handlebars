@@ -19,7 +19,7 @@
                     <div class="blog-content">
                         <ul class="blog-meta">
                             <li><i class="fas fa-user"></i>{{post.author.username}}</li>
-                            <li><i class="fas fa-clock"></i>{{dateFormat date ' MMM DD YYYY'}}</li>
+                            <li><i class="fas fa-clock"></i>{{dateFormat date 'MMM DD YYYY'}}</li>
                             <li><i class="fas fa-comments"></i>{{post.comments.length}}</li>
                         </ul>
                         <h3>{{post.title}}</h3>
@@ -29,18 +29,17 @@
 
                     <!-- blog comments -->
                     <div class="blog-comments">
-                        <h3>(1) Comments</h3>
+                        <h3>({{post.comments.length}}) Comments</h3>
 
                         <!-- comment -->
-
+                        {{#each post.comments}}
                         <div class="media">
                             <div class="media-body">
-                                <h4 class="media-heading">{{autor}}<span class="time">Date Filan</span></h4>
-                                <p>Nec feugiat nisl pretium fusce id velit ut tortor pretium. Nisl purus in mollis nunc
-                                    sed. Nunc non blandit massa enim nec.</p>
+                                <h4 class="media-heading">{{name}}<span class="time">{{dateFormat date 'MMM DD YYYY'}}</span></h4>
+                                <p>{{body}}</p>
                             </div>
                         </div>
-
+                        {{/each}}
                         <!-- /comment -->
 
                     </div>
@@ -49,10 +48,12 @@
                     <!-- reply form -->
                     <div class="reply-form">
                         <h3>Leave A Comment</h3>
-                        <form>
-                            <input class="form-control mb-4" type="text" placeholder="Name">
-                            <input class="form-control mb-4" type="email" placeholder="Email">
-                            <textarea class="form-control mb-4" row="5" placeholder="Add Your Commment"></textarea>
+                        <form method="POST" action="/posts/comment">
+                            <input type="hidden" name="postId" value="{{post._id}}">
+                            <input class="form-control mb-4" type="text" name="name" placeholder="Name">
+                            <input class="form-control mb-4" type="text" name="email" placeholder="Email">
+                            <textarea class="form-control mb-4" row="5" name="body"
+                                placeholder="Add Your Commment"></textarea>
 
                             <button type="submit" class="main-btn">Submit</button>
                         </form>
@@ -64,9 +65,9 @@
 
 
 
-                <!-- Sidebar -->
-                {{> site-sidebar}}
-                <!-- /Sidebar -->
+            <!-- Sidebar -->
+            {{> site-sidebar}}
+            <!-- /Sidebar -->
 
 
 
