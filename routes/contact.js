@@ -32,15 +32,15 @@ router.post('/email', (req, res) => {
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: "bd.burakdemirel@gmail.com", // generated ethereal user
-                pass: "ruywsbazchtcmktw", // generated ethereal password
+                user: "xxxx@gmail.com", // generated ethereal user
+                pass: "XXXXXX", // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-            from: '"Node Proje Contact Form" <bd.burakdemirel@gmail.com>', // sender address
-            to: "bd.burakdemirel@gmail.com", // list of receivers
+            from: '"Node Proje Contact Form" <xxxxx@gmail.com>', // sender address
+            to: "xxxx@gmail.com", // list of receivers
             subject: "Node Contact Message", // Subject line
             text: "Hello world?", // plain text body
             html: outputHTML, // html body
